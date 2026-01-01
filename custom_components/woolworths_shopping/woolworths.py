@@ -2,6 +2,7 @@
 import asyncio
 import logging
 import datetime
+import re
 from playwright.async_api import async_playwright
 from homeassistant.core import HomeAssistant
 from homeassistant.components.persistent_notification import async_create
@@ -44,7 +45,23 @@ class WoolworthsShoppingService:
         _LOGGER.info("Starting Woolworths shopping list to cart service")
         async with async_playwright() as p:
             browser = await p.chromium.launch()
-            page = await browser.new_page()
+            context = await browser.new_context(
+                viewport={'width': 1920, 'height': 1024},
+                ignore_https_errors=True
+            )
+            page = await context.new_page()
+            page.set_default_navigation_timeout(300000)
+
+            # Block ads and trackers
+            ad_block_list = [
+                "doubleclick.net",
+                "googleadservices.com",
+                "googlesyndication.com",
+                "google-analytics.com",
+                "ads.google.com",
+            ]
+            await page.route(re.compile(r"(\.|\/\/)(" + "|".join(ad_block_list) + ")"),
+                             lambda route: route.abort())
             try:
                 await page.goto("https://auth.woolworths.com.au/u/login")
                 await page.fill("#username", self.username)
