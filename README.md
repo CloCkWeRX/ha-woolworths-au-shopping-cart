@@ -8,6 +8,7 @@ Experiment with playwright to drive a headless browser, authenticate to woolwort
 ## Install playwright on your system
 
 
-
+```
 (homeassistant) homeassistant:~$ pip install playwright
 (homeassistant) homeassistant:~$ playwright install
+```
