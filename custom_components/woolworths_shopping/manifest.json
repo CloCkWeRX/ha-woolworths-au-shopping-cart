@@ -1,0 +1,9 @@
+{
+  "domain": "woolworths_shopping",
+  "name": "Woolworths Shopping",
+  "documentation": "https://github.com/jules-labs/woolworths-shopping",
+  "dependencies": [],
+  "codeowners": ["@jules-labs"],
+  "requirements": ["playwright", "requests"],
+  "version": "1.0.0"
+}
