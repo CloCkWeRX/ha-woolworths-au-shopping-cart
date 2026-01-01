@@ -62,16 +62,6 @@ class WoolworthsShoppingService:
             ]
             await page.route(re.compile(r"(\.|\/\/)(" + "|".join(ad_block_list) + ")"),
                              lambda route: route.abort())
-
-            # The following settings are not applicable for a local Playwright instance:
-            # - SCREEN_DEPTH: Not a standard Playwright setting.
-            # - MAX_CONCURRENT_CHROME_PROCESSES: Relates to parallel execution, not a browser setting.
-            # - ENABLE_DEBUGGER: Debugging is enabled via launch options, not a browser context setting.
-            # - PREBOOT_CHROME: Specific to cloud services, not local instances.
-            # - MAX_CONCURRENT_SESSIONS: Managed by the test runner or script logic, not Playwright.
-            # - CHROME_REFRESH_TIME: Not a standard Playwright setting.
-            # - DEFAULT_STEALTH: Stealth is not a built-in feature and requires custom scripts.
-
             try:
                 await page.goto("https://auth.woolworths.com.au/u/login")
                 await page.fill("#username", self.username)
