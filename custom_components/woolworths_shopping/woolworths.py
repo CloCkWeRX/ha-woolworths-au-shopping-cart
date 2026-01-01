@@ -2,6 +2,7 @@
 import asyncio
 import logging
 import datetime
+import re
 from playwright.async_api import async_playwright
 from homeassistant.core import HomeAssistant
 from homeassistant.components.persistent_notification import async_create
@@ -44,7 +45,33 @@ class WoolworthsShoppingService:
         _LOGGER.info("Starting Woolworths shopping list to cart service")
         async with async_playwright() as p:
             browser = await p.chromium.launch()
-            page = await browser.new_page()
+            context = await browser.new_context(
+                viewport={'width': 1920, 'height': 1024},
+                ignore_https_errors=True
+            )
+            page = await context.new_page()
+            page.set_default_navigation_timeout(300000)
+
+            # Block ads and trackers
+            ad_block_list = [
+                "doubleclick.net",
+                "googleadservices.com",
+                "googlesyndication.com",
+                "google-analytics.com",
+                "ads.google.com",
+            ]
+            await page.route(re.compile(r"(\.|\/\/)(" + "|".join(ad_block_list) + ")"),
+                             lambda route: route.abort())
+
+            # The following settings are not applicable for a local Playwright instance:
+            # - SCREEN_DEPTH: Not a standard Playwright setting.
+            # - MAX_CONCURRENT_CHROME_PROCESSES: Relates to parallel execution, not a browser setting.
+            # - ENABLE_DEBUGGER: Debugging is enabled via launch options, not a browser context setting.
+            # - PREBOOT_CHROME: Specific to cloud services, not local instances.
+            # - MAX_CONCURRENT_SESSIONS: Managed by the test runner or script logic, not Playwright.
+            # - CHROME_REFRESH_TIME: Not a standard Playwright setting.
+            # - DEFAULT_STEALTH: Stealth is not a built-in feature and requires custom scripts.
+
             try:
                 await page.goto("https://auth.woolworths.com.au/u/login")
                 await page.fill("#username", self.username)
