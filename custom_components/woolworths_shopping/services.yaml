@@ -1,0 +1,12 @@
+add_shopping_list_to_cart:
+  description: "Logs into Woolworths, adds items from the shopping list to the cart, and saves the cart as a list."
+  fields:
+    shopping_list_name:
+      description: "The name of the shopping list in Home Assistant."
+      example: "shopping"
+submit_mfa_code:
+  description: "Submits the MFA code for Woolworths login."
+  fields:
+    code:
+      description: "The 2FA code from your mobile device."
+      example: "123456"
