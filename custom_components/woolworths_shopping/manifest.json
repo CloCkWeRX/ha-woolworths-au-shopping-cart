@@ -2,6 +2,7 @@
   "domain": "woolworths_shopping",
   "name": "Woolworths Shopping",
   "documentation": "https://github.com/CloCkWeRX/ha-woolworths-au-shopping-cart",
+  "config_flow": true,
   "dependencies": [],
   "codeowners": ["@CloCkWeRX"],
   "requirements": ["playwright", "requests"],
