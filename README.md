@@ -10,5 +10,5 @@ Experiment with playwright to drive a headless browser, authenticate to woolwort
 
 ```
 (homeassistant) homeassistant:~$ pip install playwright
-(homeassistant) homeassistant:~$ playwright install
+(homeassistant) homeassistant:~$ playwright install chromium-headless-shell
 ```
